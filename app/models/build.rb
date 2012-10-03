@@ -3,7 +3,7 @@ class Build < ActiveRecord::Base
 
   belongs_to :project
 
-  before_create :send_to_jenkins
+  after_create :send_to_jenkins
 
   protected
   def send_to_jenkins
@@ -15,5 +15,7 @@ class Build < ActiveRecord::Base
     else
       self.status = 'error'
     end
+
+    self.save
   end
 end
