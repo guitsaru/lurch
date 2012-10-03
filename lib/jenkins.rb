@@ -25,6 +25,7 @@ class Jenkins
       :headers => {'Content-Type' => 'application/xml'},
       :body => config
     }
+
     self.class.post('/createItem', options)
   end
 

@@ -7,7 +7,10 @@ class Build < ActiveRecord::Base
 
   protected
   def send_to_jenkins
-    if Jenkins.new.create_build(self)
+    response = Jenkins.new.create_build(self)
+    Rails.logger.info response.inspect
+
+    if response.success?
       self.status = 'building'
     else
       self.status = 'error'
