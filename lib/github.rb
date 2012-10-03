@@ -11,7 +11,7 @@ module GitHub
       hook_url = 'http://' + hook_url unless hook_url =~ /https?:\/\//
 
       options  = {:url => hook_url}
-      params   = {:events => ["push"], :active => true}
+      params   = {:events => ["push", "pull_request"], :active => true}
 
       github.create_hook(project.repo, 'web', options, params)
     end
