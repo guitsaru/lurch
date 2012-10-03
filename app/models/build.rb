@@ -10,6 +10,7 @@ class Build < ActiveRecord::Base
     response = Jenkins.new.create_build(self)
 
     if response
+      Rails.logger.info(response)
       self.status = 'building'
     else
       self.status = 'error'
