@@ -49,7 +49,7 @@ RUBY_VERSION=1.9.3-p125 source ./use-ruby
 gem install --conservative bundler
 if [ ! -d &quot;./.git&quot; ]; then
   git init
-  git remote add origin <%= repo %>
+  git remote add origin git@github.com:<%= repo %>.git
 fi
 git fetch -q origin
 git reset -q --hard $LURCH_SHA1

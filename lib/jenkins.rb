@@ -35,10 +35,13 @@ class Jenkins
 
     options = {
       :basic_auth => @auth,
-      :body       => {:parameter => [
-        {:name => 'LURCH_SHA1', :value => build.sha},
-        {:name => 'LURCH_ID',   :value => build.id}
-      ]}.to_json
+      :query      => {
+        :json => {
+          :parameter => [
+            {:name => 'LURCH_SHA1', :value => build.sha},
+            {:name => 'LURCH_ID',   :value => build.id}
+          ]}.to_json
+      }
     }
 
     self.class.post("/job/#{project.jenkins_id}/build",

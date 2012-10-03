@@ -16,7 +16,7 @@ class JenkinsController < ApplicationController
   #           }
   # }
   def create
-    payload = Payload.new(request.body)
+    payload = Payload.new(request.body.read)
     build   = Build.find(payload.build_id)
     sha     = payload.sha
 
