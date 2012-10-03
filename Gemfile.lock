@@ -207,6 +207,7 @@ DEPENDENCIES
   guard-bundler
   guard-livereload
   guard-rspec
+  haml (~> 3.1.7)
   haml-rails (~> 0.3.5)
   httparty
   jbuilder
