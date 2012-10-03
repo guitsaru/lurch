@@ -20,6 +20,7 @@ class JenkinsController < ApplicationController
     build   = Build.find(payload.build_id)
     sha     = payload.sha
 
+    build.jenkins_id = payload.jenkins_id
     if payload.started?
       build.status = 'started'
     elsif payload.completed?
@@ -44,6 +45,10 @@ class JenkinsController < ApplicationController
 
     def build_id
       build['parameters']['LURCH_ID']
+    end
+
+    def jenkins_id
+      build['parameters']['url'].split('/').last
     end
 
     def sha
