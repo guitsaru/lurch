@@ -1,4 +1,6 @@
 class JenkinsController < ApplicationController
+  protect_from_forgery :except => :create
+
   # Sample Payload
   #
   # {

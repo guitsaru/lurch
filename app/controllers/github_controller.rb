@@ -1,4 +1,6 @@
 class GithubController < ApplicationController
+  protect_from_forgery :except => :create
+
   def create
     params[:payload] ||= '{}'
     payload = JSON.parse(params[:payload])
