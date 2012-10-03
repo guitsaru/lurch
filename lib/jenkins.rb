@@ -34,11 +34,15 @@ class Jenkins
     return unless project
 
     options = {
+      :format     => :json,
       :basic_auth => @auth,
-      :body => {'LURCH_SHA1' => build.sha, 'LURCH_ID' => build.id}
+      :body       => {:parameter => [
+        {:name => 'LURCH_SHA1', :value => build.sha},
+        {:name => 'LURCH_ID',   :value => build.id}
+      ]}.to_json
     }
 
-    self.class.post("/job/#{project.jenkins_id}/buildWithParameters/api/json",
+    self.class.post("/job/#{project.jenkins_id}/build",
                     options)
   end
 end
