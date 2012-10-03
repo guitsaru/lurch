@@ -28,7 +28,7 @@ class JenkinsController < ApplicationController
 
     build.save
 
-    render :head => :ok
+    head :ok
   end
 
   class Payload

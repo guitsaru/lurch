@@ -12,6 +12,6 @@ class GithubController < ApplicationController
 
     project.builds.create(:sha => sha)
 
-    render :head => :ok
+    head :created
   end
 end
