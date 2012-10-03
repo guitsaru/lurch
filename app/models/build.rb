@@ -5,6 +5,14 @@ class Build < ActiveRecord::Base
 
   after_create :send_to_jenkins
 
+  def jenkins_url
+    "#{project.jenkins_url}/#{jenkins_id || 'lastBuild'}"
+  end
+
+  def jenkins_console_url
+    jenkins_url + "/console"
+  end
+
   protected
   def send_to_jenkins
     response = Jenkins.new.create_build(self)

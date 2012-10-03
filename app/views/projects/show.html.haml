@@ -7,6 +7,8 @@
   %b Jenkins:
   = link_to("View project in Jenkins", @project.jenkins_url)
 
+= link_to 'Builds', project_builds_path(@project)
+\|
 = link_to 'Edit', edit_project_path(@project)
 \|
 = link_to 'Back', projects_path

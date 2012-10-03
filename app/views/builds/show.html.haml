@@ -5,7 +5,8 @@
   = @build.sha
 %p
   %b Jenkins:
-  = @build.jenkins_id
+  = link_to("View in Jenkins", @build.jenkins_url)
+  = link_to("View Console Output", @build.jenkins_console_url)
 %p
   %b Status:
   = @build.status

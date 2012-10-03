@@ -11,8 +11,8 @@ class Project < ActiveRecord::Base
   before_validation :set_jenkins_id
 
   def jenkins_url
-    base = Setting.find_by_key('jenkins_url').try(:value).to_s.chomp('/')
-    base = "http://#{base}" unless base =~ /http:\/\//
+     base = Setting.by_key('jenkins_url').to_s.chomp('/')
+     base = "http://#{base}" unless base =~ /http:\/\//
 
     "#{base}/job/#{jenkins_id}"
   end

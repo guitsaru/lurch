@@ -48,7 +48,7 @@ class JenkinsController < ApplicationController
     end
 
     def jenkins_id
-      build['parameters']['url'].split('/').last
+      build['number']
     end
 
     def sha
