@@ -2,7 +2,8 @@ class GithubController < ApplicationController
   protect_from_forgery :except => :create
 
   def create
-    params[:payload] ||= '{}'
+    head :bad_request and return unless params[:payload].present?
+
     payload    = JSON.parse(params[:payload])
     repository = payload['repository']['name']
     owner      = payload['repository']['owner']['name']

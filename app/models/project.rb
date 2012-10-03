@@ -12,7 +12,7 @@ class Project < ActiveRecord::Base
 
   def jenkins_url
      base = Setting.by_key('jenkins_url').to_s.chomp('/')
-     base = "http://#{base}" unless base =~ /http:\/\//
+     base = "http://#{base}" unless base =~ /https?:\/\//
 
     "#{base}/job/#{jenkins_id}"
   end

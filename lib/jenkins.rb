@@ -1,4 +1,4 @@
-class Jenkins
+class JenkinsHTTP
   include HTTParty
 
   def initialize
@@ -48,3 +48,17 @@ class Jenkins
                     options)
   end
 end
+
+class MockJenkins
+  def create_job(project)
+  end
+
+  def create_build(build)
+  end
+end
+
+Jenkins = if Rails.env.test?
+            MockJenkins
+          else
+            JenkinsHTTP
+          end
