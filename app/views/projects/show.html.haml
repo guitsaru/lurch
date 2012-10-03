@@ -1,0 +1,12 @@
+%p#notice= notice
+
+%p
+  %b Repo:
+  = @project.repo
+%p
+  %b Jenkins:
+  %a{:href => @project.jenkins_url} View project in Jenkins
+
+= link_to 'Edit', edit_project_path(@project)
+\|
+= link_to 'Back', projects_path

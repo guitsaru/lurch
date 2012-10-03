@@ -1,0 +1,21 @@
+!!!
+%html
+  %head
+    %title Lurch
+    = stylesheet_link_tag 'application'
+    = javascript_include_tag 'application'
+    = csrf_meta_tag
+  %body
+    .navbar
+      .navbar-inner
+        .container
+          = link_to('Lurch', root_path, :class => 'brand')
+          %ul.nav
+            %li= link_to('Projects', projects_path)
+            %li= link_to('Settings', settings_path)
+    .container
+      = flash_message
+
+      #content
+        = yield
+      #footer
