@@ -1,0 +1,23 @@
+%h1 Listing builds
+
+%table
+  %tr
+    %th Sha
+    %th Jenkins
+    %th Status
+    %th
+    %th
+    %th
+
+  - @builds.each do |build|
+    %tr
+      %td= build.sha
+      %td= build.jenkins_id
+      %td= build.status
+      %td= link_to 'Show', build
+      %td= link_to 'Edit', edit_build_path(build)
+      %td= link_to 'Destroy', build, method: :delete, data: { confirm: 'Are you sure?' }
+
+%br
+
+= link_to 'New Build', new_build_path

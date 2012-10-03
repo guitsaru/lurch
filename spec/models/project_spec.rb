@@ -13,6 +13,7 @@ describe Project do
 
   it { should validate_presence_of :repo }
   it { should validate_uniqueness_of :jenkins_id }
+  it { should have_many(:builds) }
 
   describe :jenkins do
     it "should create a new jenkins job on creation" do
@@ -24,6 +25,12 @@ describe Project do
     it "should have a jenkins url" do
       project = FactoryGirl.build(:project, :repo => 'br/breport')
       project.jenkins_url.should == 'http://example.com/job/br-breport'
+    end
+  end
+
+  describe :github do
+    it "should add post commit hook" do
+      Github.should_receive(:add_hook).with(subject)
     end
   end
 end

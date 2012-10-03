@@ -5,7 +5,7 @@
   = @project.repo
 %p
   %b Jenkins:
-  %a{:href => @project.jenkins_url} View project in Jenkins
+  = link_to("View project in Jenkins", @project.jenkins_url)
 
 = link_to 'Edit', edit_project_path(@project)
 \|

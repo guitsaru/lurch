@@ -1,0 +1,15 @@
+%p#notice= notice
+
+%p
+  %b Sha:
+  = @build.sha
+%p
+  %b Jenkins:
+  = @build.jenkins_id
+%p
+  %b Status:
+  = @build.status
+
+= link_to 'Edit', edit_build_path(@build)
+\|
+= link_to 'Back', builds_path

@@ -13,12 +13,12 @@
     <hudson.model.ParametersDefinitionProperty>
       <parameterDefinitions>
         <hudson.model.StringParameterDefinition>
-          <name>JANKY_SHA1</name>
+          <name>LURCH_SHA1</name>
           <description></description>
           <defaultValue></defaultValue>
         </hudson.model.StringParameterDefinition>
         <hudson.model.StringParameterDefinition>
-          <name>JANKY_ID</name>
+          <name>LURCH_ID</name>
           <description></description>
           <defaultValue></defaultValue>
         </hudson.model.StringParameterDefinition>
@@ -52,7 +52,7 @@ if [ ! -d &quot;./.git&quot; ]; then
   git remote add origin <%= repo %>
 fi
 git fetch -q origin
-git reset -q --hard $JANKY_SHA1
+git reset -q --hard $LURCH_SHA1
 if [ -f script/cibuild ]; then
   script/cibuild
 else

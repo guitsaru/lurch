@@ -63,6 +63,7 @@ end
 
 gem "pg"
 gem "httparty"
+gem "octokit"
 gem "rspec-rails", :group => [:development, :test]
 gem "factory_girl_rails", :group => :test
 gem 'shoulda-matchers', :group => :test

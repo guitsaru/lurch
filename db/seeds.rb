@@ -12,3 +12,8 @@ Setting.find_or_create_by_key('jenkins_password')
 
 Setting.find_or_create_by_key('campfire_account')
 Setting.find_or_create_by_key('campfire_token')
+
+Setting.find_or_create_by_key('github_username')
+Setting.find_or_create_by_key('github_password')
+
+Setting.find_or_create_by_key('lurch_url')
