@@ -18,6 +18,11 @@
           <defaultValue></defaultValue>
         </hudson.model.StringParameterDefinition>
         <hudson.model.StringParameterDefinition>
+          <name>LURCH_REPO</name>
+          <description></description>
+          <defaultValue></defaultValue>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
           <name>LURCH_ID</name>
           <description></description>
           <defaultValue></defaultValue>
@@ -49,8 +54,9 @@ RUBY_VERSION=1.9.3-p125 source ./use-ruby
 gem install --conservative bundler
 if [ ! -d &quot;./.git&quot; ]; then
   git init
-  git remote add origin git@github.com:<%= repo %>.git
 fi
+git remote rm origin
+git remote add origin git@github.com:$LURCH_REPO.git
 git fetch -q origin
 git reset -q --hard $LURCH_SHA1
 if [ -f script/cibuild ]; then

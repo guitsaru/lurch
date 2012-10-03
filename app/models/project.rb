@@ -4,7 +4,7 @@ class Project < ActiveRecord::Base
   validates :repo, :presence => true
   validates :jenkins_id, :presence => true, :uniqueness => true
 
-  has_many :builds
+  has_many :builds, :dependent => :destroy
 
   before_create :create_jenkins_job
   after_create  :create_github_hook

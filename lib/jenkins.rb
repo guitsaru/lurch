@@ -39,6 +39,7 @@ class JenkinsHTTP
         :json => {
           :parameter => [
             {:name => 'LURCH_SHA1', :value => build.sha},
+            {:name => 'LURCH_REPO', :value => build.repo},
             {:name => 'LURCH_ID',   :value => build.id}
           ]}.to_json
       }
