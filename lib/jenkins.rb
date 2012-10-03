@@ -34,7 +34,6 @@ class Jenkins
     return unless project
 
     options = {
-      :format     => :json,
       :basic_auth => @auth,
       :body       => {:parameter => [
         {:name => 'LURCH_SHA1', :value => build.sha},
