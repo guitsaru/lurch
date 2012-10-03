@@ -1,4 +1,8 @@
 Lurch::Application.routes.draw do
+  resources :settings
+
+  resources :projects
+
   root :to => 'home#index'
 
   get "home/index"
