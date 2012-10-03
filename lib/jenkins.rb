@@ -33,7 +33,10 @@ class Jenkins
     project = build.try(:project)
     return unless project
 
-    options = {:body => {'LURCH_SHA1' => build.sha, 'LURCH_ID' => build.id}}
+    options = {
+      :basic_auth => @auth,
+      :body => {'LURCH_SHA1' => build.sha, 'LURCH_ID' => build.id}
+    }
 
     self.class.post("/job/#{project.jenkins_id}/buildWithParameters/api/json",
                     options)
