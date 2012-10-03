@@ -22,7 +22,7 @@ class GithubController < ApplicationController
     end
 
     def pull_request
-      payload['pull_request']
+      body['pull_request']
     end
 
     def pull_request?
@@ -50,7 +50,7 @@ class GithubController < ApplicationController
     end
 
     def sha
-      payload['after']
+      body['after']
     end
   end
 end

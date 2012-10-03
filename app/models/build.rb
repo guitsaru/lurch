@@ -1,5 +1,5 @@
 class Build < ActiveRecord::Base
-  attr_accessible :jenkins_id, :sha, :status
+  attr_accessible :jenkins_id, :sha, :status, :repo
 
   belongs_to :project
   validates  :project_id, :presence => true
