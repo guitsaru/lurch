@@ -14,6 +14,7 @@ class Jenkins
     repo = project.repo
     name = project.jenkins_id
     callback_url = Setting.by_key('lurch_url').to_s + '/jenkins'
+    callback_url = 'http://' + callback_url unless callback_url =~ /https?:\/\//
 
     template = File.read(File.join(Rails.root, 'config', 'default.xml.erb'))
     config = ERB.new(template).result(binding)
