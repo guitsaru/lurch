@@ -23,12 +23,12 @@ module GitHub
 
     def self.update_repo_status_for_build(build)
       build_url = "#{Setting.by_key('lurch_url').to_s}/projects/#{build.project.id}/builds/#{build.id}"
-      response = github.create_status(build.project.repo, build.sha, build.status, :description => "Build Failed: #{build_url}")
+      github.create_status(build.project.repo, build.sha, build.status, :description => "Build Failed: #{build_url}")
 
       pull_request = pull_request_for_sha(build.project, build.sha)
 
       if pull_request
-        creator  = response['creator']['login']
+        creator  = response['head']['user']['login']
         comment = "@#{creator} Build failed: #{build_url}"
 
         github.add_comment(build.project.repo, pull_request['number'], comment)
