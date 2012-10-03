@@ -3,10 +3,14 @@ class GithubController < ApplicationController
 
   def create
     params[:payload] ||= '{}'
-    payload = JSON.parse(params[:payload])
-    sha     = payload['after']
+    payload    = JSON.parse(params[:payload])
+    repository = payload['repository']['name']
+    owner      = payload['repository']['owner']['name']
+    sha        = payload['after']
 
-    Build.create(:sha => sha)
+    project    = Project.find_by_repo("#{owner}/#{repository}")
+
+    project.builds.create(:sha => sha)
 
     render :head => :ok
   end

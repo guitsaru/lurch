@@ -10,7 +10,7 @@ class Build < ActiveRecord::Base
     response = Jenkins.new.create_build(self)
     Rails.logger.info response.inspect
 
-    if response.success?
+    if response.try(:success?)
       self.status = 'building'
     else
       self.status = 'error'
