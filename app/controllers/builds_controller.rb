@@ -22,7 +22,7 @@ class BuildsController < ApplicationController
     @build.destroy
 
     respond_to do |format|
-      format.html { redirect_to builds_url }
+      format.html { redirect_to [@project, @build] }
       format.json { head :no_content }
     end
   end
