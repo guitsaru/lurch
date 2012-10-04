@@ -45,7 +45,7 @@ class GithubController < ApplicationController
 
     def current_repo
       if pull_request?
-        body['head']['repo']['full_name']
+        body['pull_request']['head']['repo']['full_name']
       else
         main_repo
       end
