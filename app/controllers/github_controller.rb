@@ -11,7 +11,9 @@ class GithubController < ApplicationController
 
     head(:not_found) and return unless project
 
-    project.builds.create(:sha => sha, :repo => payload.current_repo)
+    if payload.buildable?
+      project.builds.create(:sha => sha, :repo => payload.current_repo)
+    end
 
     head :created
   end
@@ -53,6 +55,14 @@ class GithubController < ApplicationController
 
     def sha
       body['after'] || body['pull_request']['head']['sha']
+    end
+
+    def buildable?
+      return false if sha =~ /\A0+\z/
+      return false if Build.find_by_sha(sha)
+      return true unless pull_request?
+
+      body['action'] == 'opened' || body['action'] == 'synchronize'
     end
   end
 end
