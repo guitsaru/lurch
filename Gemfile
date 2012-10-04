@@ -47,7 +47,6 @@ group :development do
   gem "guard-rspec"
 end
 
-gem "pg"
 gem "httparty"
 gem "octokit"
 gem "rspec-rails", :group => [:development, :test]
