@@ -48,7 +48,7 @@ group :development do
 end
 
 gem "httparty"
-gem "octokit"
+gem "octokit", :git => 'https://github.com/pengwynn/octokit.git'
 gem "rspec-rails", :group => [:development, :test]
 gem "factory_girl_rails", :group => :test
 gem 'shoulda-matchers', :group => :test
