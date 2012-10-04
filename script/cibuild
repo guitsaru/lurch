@@ -1,0 +1,57 @@
+#!/usr/bin/env ruby
+require 'fileutils'
+
+ENV['RAILS_ENV'] = 'test'
+
+def separator(text)
+  puts('#' * 78)
+  puts text
+end
+
+separator("Using MySQL")
+
+mysql_commands = <<-END
+mkdir -p ~/mysql
+cat > ~/.my.cnf <<EOF
+[mysqld]
+datadir=/home/hudson/mysql/data
+user=hudson
+socket=/home/hudson/mysql/mysql.sock
+EOF
+
+export MYSQL_HOME=~/mysql
+mysql_install_db
+/usr/libexec/mysqld > /dev/null &
+
+/usr/sbin/redis-server > /dev/null &
+END
+
+system(mysql_commands)
+
+separator("Adding database.yml")
+if File.exist?("config/database.yml")
+  puts "Already exists.  Add config/database.yml to your .gitignore file."
+  FileUtils.rm("config/database.yml")
+end
+
+File.open("config/database.yml", "w") do |f|
+  f.puts "test:"
+  f.puts "  adapter: mysql2"
+  f.puts "  database: lurch_test"
+  f.puts "  host: 127.0.0.1"
+  f.puts "  user: root"
+  f.puts "  encoding: utf8"
+end
+
+separator("Updating Gems")
+system("bundle install --path vendor/gems --binstubs")
+
+separator("Migrating Database")
+system("bundle exec rake db:create db:schema:load")
+
+separator("Running Tests")
+success = system("bundle exec rake spec")
+
+FileUtils.rm("config/database.yml")
+
+success ? exit(0) : exit(1)
