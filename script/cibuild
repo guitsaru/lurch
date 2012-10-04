@@ -44,11 +44,11 @@ File.open("config/database.yml", "w") do |f|
 end
 
 separator("Using MySQL instead of PG")
-system("sed -n 's/pg/mysql2/gpw Gemfile' Gemfile > Gemfile.new")
+system("sed 's/pg/mysql2/' Gemfile > Gemfile.new")
 system("mv Gemfile.new Gemfile")
-system("sed 's/pg \(\d+\.\d+\.\d+\)/mysql2 (0.3.11)/gpw Gemfile.lock' Gemfile.lock > Gemfile.lock.new")
+system("sed 's/pg \(\d+\.\d+\.\d+\)/mysql2 (0.3.11)/' Gemfile.lock > Gemfile.lock.new")
 system("mv Gemfile.lock.new Gemfile.lock")
-system("sed 's/pg/mysql2/gpw Gemfile.lock' Gemfile.lock > Gemfile.lock.new")
+system("sed 's/pg/mysql2/g Gemfile.lock' Gemfile.lock > Gemfile.lock.new")
 system("mv Gemfile.lock.new Gemfile.lock")
 
 system("rm Gemfile.new Gemfile.lock.new")
