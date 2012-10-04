@@ -33,7 +33,7 @@ class Build < ActiveRecord::Base
     response = Jenkins.new.create_build(self)
 
     if response
-      self.status = 'building'
+      self.status = 'pending'
     else
       self.status = 'error'
     end

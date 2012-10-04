@@ -23,11 +23,11 @@ class JenkinsController < ApplicationController
     build.jenkins_id = payload.jenkins_id
     if payload.started?
       build.status = 'started'
+      build.save
     elsif payload.completed?
       build.status = payload.status
+      build.save
     end
-
-    build.save
 
     head :ok
   end
@@ -60,7 +60,7 @@ class JenkinsController < ApplicationController
     end
 
     def completed?
-      build['phase'] == 'FINISHED'
+      build['phase'] == 'COMPLETED'
     end
 
     def status
