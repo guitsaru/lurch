@@ -9,7 +9,8 @@
         - else
           %i.icon-time
 
-        = link_to(project.repo, "https://github.com/#{project.repo}")
+        = project.jenkins_id
+      %td= link_to(project.repo, "https://github.com/#{project.repo}")
       %td
         - if project.last_build
           = link_to(project.last_build.ref, project.last_build.ref_url)
