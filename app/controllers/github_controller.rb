@@ -38,7 +38,7 @@ class GithubController < ApplicationController
     end
 
     def owner
-      body['repository']['owner']['name'] || body['pull_request']['head']['repo']['owner']['login']
+      body['repository']['owner']['name'] || body['pull_request']['base']['repo']['owner']['login']
     end
 
     def repository
