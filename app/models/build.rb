@@ -88,10 +88,6 @@ class Build < ActiveRecord::Base
     text = nil
     build_url = "#{Setting.by_key('lurch_url').to_s}/projects/#{self.project.jenkins_id}/builds/#{self.id}"
 
-    if started?
-      text = "Build started on #{self.repo}: #{build_url}"
-    end
-
     if succeeded?
       text = "Build succeeded on #{self.repo}: #{build_url}"
     end

@@ -29,11 +29,15 @@ module GitHub
 
       pull_request = pull_request_for_sha(build.project, build.sha)
 
-      if build.failed? && pull_request
+      if build.failed?
         creator  = pull_request['head']['user']['login']
         comment = "@#{creator} #{status_text}"
 
-        github.add_comment(build.project.repo, pull_request['number'], comment)
+        if pull_request
+          github.add_comment(build.project.repo, pull_request['number'], comment)
+        else
+          github.create_commit_comment(build.project.repo, build.sha, comment)
+        end
       end
     end
 
