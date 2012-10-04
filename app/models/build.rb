@@ -1,7 +1,7 @@
 class Build < ActiveRecord::Base
   attr_accessible :jenkins_id, :sha, :status, :repo
 
-  belongs_to :project
+  belongs_to :project, :touch => true
   validates  :project_id, :presence => true
 
   before_create :check_for_pull_request
