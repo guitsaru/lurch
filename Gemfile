@@ -56,3 +56,4 @@ gem 'fakeweb', :group => :test
 gem "simple_form"
 gem "kaminari"
 gem 'bootstrap_kaminari'
+gem 'tinder'

@@ -7,6 +7,7 @@ class Build < ActiveRecord::Base
   before_create :check_for_pull_request
   after_create :send_to_jenkins
   after_update :update_pull_request_status
+  after_save   :notify_campfire
 
   def jenkins_url
     return '' unless project
@@ -81,5 +82,24 @@ class Build < ActiveRecord::Base
     return unless finished?
 
     response = Github.update_repo_status_for_build(self)
+  end
+
+  def notify_campfire
+    text = nil
+    build_url = "#{Setting.by_key('lurch_url').to_s}/projects/#{self.project.id}/builds/#{self.id}"
+
+    if started?
+      text = "Build started on #{self.repo}: #{build_url}"
+    end
+
+    if succeeded?
+      text = "Build succeeded on #{self.repo}: #{build_url}"
+    end
+
+    if failed?
+      text = "Build failed on #{self.repo}: #{build_url}"
+    end
+
+    Campfire.speak(text) if text
   end
 end
