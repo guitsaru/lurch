@@ -22,7 +22,7 @@ module GitHub
     end
 
     def self.update_repo_status_for_build(build)
-      build_url = "#{Setting.by_key('lurch_url').to_s}/projects/#{build.project.id}/builds/#{build.id}"
+      build_url = "#{Setting.by_key('lurch_url').to_s}/projects/#{build.project.jenkins_id}/builds/#{build.id}"
       status_text = build.failed? ? "Build failed: #{build_url}" : "Build passed: #{build_url}"
 
       github.create_status(build.project.repo, build.sha, build.status, :description => status_text)

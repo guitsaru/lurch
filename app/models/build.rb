@@ -86,7 +86,7 @@ class Build < ActiveRecord::Base
 
   def notify_campfire
     text = nil
-    build_url = "#{Setting.by_key('lurch_url').to_s}/projects/#{self.project.id}/builds/#{self.id}"
+    build_url = "#{Setting.by_key('lurch_url').to_s}/projects/#{self.project.jenkins_id}/builds/#{self.id}"
 
     if started?
       text = "Build started on #{self.repo}: #{build_url}"
