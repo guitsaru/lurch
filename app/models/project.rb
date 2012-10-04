@@ -10,6 +10,10 @@ class Project < ActiveRecord::Base
   after_create  :create_github_hook
   before_validation :set_jenkins_id
 
+  def to_param
+    jenkins_id
+  end
+
   def last_build
     builds.order('created_at DESC').first
   end

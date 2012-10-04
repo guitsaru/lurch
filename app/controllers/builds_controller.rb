@@ -18,7 +18,7 @@ class BuildsController < ApplicationController
   end
 
   def create
-    @project = Project.find(params[:project_id])
+    @project = Project.find_by_jenkins_id(params[:project_id])
 
     unless @project
       flash[:error] = 'You must specify a project'
@@ -45,7 +45,7 @@ class BuildsController < ApplicationController
   protected
   def scope
     if params[:project_id]
-      @project = Project.find(params[:project_id])
+      @project = Project.find_by_jenkins_id(params[:project_id])
       @project.builds
     else
       Build
