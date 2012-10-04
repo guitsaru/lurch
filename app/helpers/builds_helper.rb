@@ -11,4 +11,16 @@ module BuildsHelper
       'warning'
     end
   end
+
+  def build_bootstrap_label_class(build)
+    if build.succeeded?
+      'label-success'
+    elsif build.failed?
+      'label-important'
+    elsif build.started?
+      'label-info'
+    elsif build.pending?
+      'label-warning'
+    end
+  end
 end

@@ -17,7 +17,7 @@
       %td= link_to(build.status, build.jenkins_console_url)
       %td
         %small= build.created_at.strftime('%m/%d/%Y %I:%M %p')
-      %td= link_to '<i class="icon-search"></i>'.html_safe, build
+      %td= link_to '<i class="icon-search"></i>'.html_safe, [@project, build]
       %td= link_to '<i class="icon-remove"></i>'.html_safe, [@project, build], method: :delete, data: { confirm: 'Are you sure?' }
 
 %br

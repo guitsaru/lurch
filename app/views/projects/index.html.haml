@@ -18,7 +18,7 @@
       %td= link_to("Builds", project_builds_url(project))
       %td
         - if project.last_build
-          %small= project.last_build.created_at.strftime('%m/%d/%Y %I:%M %p')
+          %small= link_to(project.last_build.created_at.strftime('%m/%d/%Y %I:%M %p'), project.last_build)
       %td= link_to '<i class="icon-repeat"></i>'.html_safe, project_builds_path(project), :method => :post
       %td= link_to '<i class="icon-edit"></i>'.html_safe, edit_project_path(project)
       %td= link_to '<i class="icon-remove"></i>'.html_safe, project, method: :delete, data: { confirm: 'Are you sure?' }
