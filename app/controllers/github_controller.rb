@@ -52,7 +52,7 @@ class GithubController < ApplicationController
     end
 
     def sha
-      body['after']
+      body['after'] || body['pull_request']['repo']['sha']
     end
   end
 end
