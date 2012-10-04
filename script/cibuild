@@ -44,9 +44,9 @@ File.open("config/database.yml", "w") do |f|
 end
 
 separator("Using MySQL instead of PG")
-system("sed 's/pg/mysql2' Gemfile")
-system("sed 's/pg/mysql2' Gemfile.lock")
-system("sed 's/pg \(\d+\.\d+\.\d+\)/mysql2 (0.3.11)' Gemfile.lock")
+system("sed 's/pg/mysql2/' Gemfile")
+system("sed 's/pg/mysql2/' Gemfile.lock")
+system("sed 's/pg \(\d+\.\d+\.\d+\)/mysql2 (0.3.11)/' Gemfile.lock")
 
 separator("Updating Gems")
 system("bundle install --path vendor/gems --binstubs")
