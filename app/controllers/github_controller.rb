@@ -9,6 +9,8 @@ class GithubController < ApplicationController
 
     project    = Project.find_by_repo(payload.main_repo)
 
+    head(:not_found) and return unless project
+
     project.builds.create(:sha => sha, :repo => payload.current_repo)
 
     head :created
@@ -34,7 +36,7 @@ class GithubController < ApplicationController
     end
 
     def owner
-      body['repository']['owner']['name']
+      body['repository']['owner']['name'] || body['repository']['owner']['login']
     end
 
     def repository
