@@ -7,8 +7,6 @@ class GithubController < ApplicationController
     payload    = Payload.new(params[:payload])
     sha        = payload.sha
 
-    Rails.logger.info "#################################"
-    Rails.logger.info payload.main_repo.inspect
     project    = Project.find_by_repo(payload.main_repo)
 
     head(:not_found) and return unless project

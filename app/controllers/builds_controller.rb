@@ -17,6 +17,21 @@ class BuildsController < ApplicationController
     end
   end
 
+  def create
+    @project = Project.find(params[:project_id])
+
+    unless @project
+      flash[:error] = 'You must specify a project'
+      redirect_to projects_path
+      return
+    end
+
+    @project.builds.create(:sha => Github.current_sha_for(@project),
+                           :repo => @project.repo)
+
+    redirect_to(project_builds_path(@project))
+  end
+
   def destroy
     @build = scope.find(params[:id])
     @build.destroy

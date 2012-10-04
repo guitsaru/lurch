@@ -36,6 +36,10 @@ module GitHub
         github.add_comment(build.project.repo, pull_request['number'], comment)
       end
     end
+
+    def self.current_sha_for(project)
+      github.commit(project.repo, 'master').sha
+    end
   end
 
   class Test
