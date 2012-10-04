@@ -28,7 +28,7 @@ module GitHub
       pull_request = pull_request_for_sha(build.project, build.sha)
 
       if pull_request
-        creator  = response['head']['user']['login']
+        creator  = pull_request['head']['user']['login']
         comment = "@#{creator} Build failed: #{build_url}"
 
         github.add_comment(build.project.repo, pull_request['number'], comment)
