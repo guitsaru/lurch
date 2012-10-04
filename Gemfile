@@ -55,3 +55,5 @@ gem "factory_girl_rails", :group => :test
 gem 'shoulda-matchers', :group => :test
 gem 'fakeweb', :group => :test
 gem "simple_form"
+gem "kaminari"
+gem 'bootstrap_kaminari'

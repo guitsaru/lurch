@@ -42,6 +42,9 @@ module GitHub
     def self.add_hook(project)
       true
     end
+
+    def self.pull_request_for_sha(project, sha)
+    end
   end
 end
 

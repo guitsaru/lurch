@@ -1,6 +1,6 @@
 class BuildsController < ApplicationController
   def index
-    @builds = scope.order("created_at DESC")
+    @builds = scope.order("created_at DESC").page(params[:page]).per(50)
 
     respond_to do |format|
       format.html
@@ -30,7 +30,8 @@ class BuildsController < ApplicationController
   protected
   def scope
     if params[:project_id]
-      Project.find(params[:project_id]).builds
+      @project = Project.find(params[:project_id])
+      @project.builds
     else
       Build
     end

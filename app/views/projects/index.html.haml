@@ -1,20 +1,24 @@
 %h1 Listing projects
 
-%table
-  %tr
-    %th Repo
-    %th Jenkins
-    %th
-    %th
-    %th
-
+%table.table.condensed
   - @projects.each do |project|
-    %tr
-      %td= project.repo
-      %td= project.jenkins_id
-      %td= link_to 'Show', project
-      %td= link_to 'Edit', edit_project_path(project)
-      %td= link_to 'Destroy', project, method: :delete, data: { confirm: 'Are you sure?' }
+    %tr{:class => build_bootstrap_class(project.last_build)}
+      %td
+        - if project.last_build.succeeded?
+          %i.icon-ok-sign
+        - elsif project.last_build.failed?
+          %i.icon-remove-sign
+        - else
+          %i.icon-time
+
+        = link_to(project.repo, "https://github.com/#{project.repo}")
+      %td= link_to(project.last_build.ref, project.last_build.ref_url)
+      %td= link_to("View on Jenkins", project.jenkins_url)
+      %td= link_to("Builds", project_builds_url(project))
+      %td
+        %small= project.last_build.created_at.strftime('%m/%d/%Y %I:%M %p')
+      %td= link_to '<i class="icon-edit"></i>'.html_safe, edit_project_path(project)
+      %td= link_to '<i class="icon-remove"></i>'.html_safe, project, method: :delete, data: { confirm: 'Are you sure?' }
 
 %br
 

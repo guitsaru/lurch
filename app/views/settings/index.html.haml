@@ -1,21 +1,9 @@
-%h1 Listing settings
+%h1 Settings
 
-%table
-  %tr
-    %th Key
-    %th Value
-    %th
-    %th
-    %th
-
+%table.table.condensed.table-striped
   - @settings.each do |setting|
     %tr
       %td= setting.key
       %td= setting.value
-      %td= link_to 'Show', setting
-      %td= link_to 'Edit', edit_setting_path(setting)
-      %td= link_to 'Destroy', setting, method: :delete, data: { confirm: 'Are you sure?' }
-
-%br
-
-= link_to 'New Setting', new_setting_path
+      %td= link_to '<i class="icon-edit"></i>'.html_safe, edit_setting_path(setting)
+      %td= link_to '<i class="icon-remove"></i>'.html_safe, setting, method: :delete, data: { confirm: 'Are you sure?' }

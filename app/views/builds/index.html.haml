@@ -1,23 +1,25 @@
-%h1 Listing builds
+%h1 Builds
 
-%table
-  %tr
-    %th Sha
-    %th Jenkins
-    %th Status
-    %th
-    %th
-    %th
-
+%table.table.condensed
   - @builds.each do |build|
-    %tr
-      %td= build.sha
-      %td= build.jenkins_id
-      %td= build.status
-      %td= link_to 'Show', build
-      %td= link_to 'Edit', edit_build_path(build)
-      %td= link_to 'Destroy', build, method: :delete, data: { confirm: 'Are you sure?' }
+    %tr{:class => build_bootstrap_class(build)}
+      %td
+        - if build.succeeded?
+          %i.icon-ok-sign
+        - elsif build.failed?
+          %i.icon-remove-sign
+        - else
+          %i.icon-time
+
+        = link_to(build.repo, "https://github.com/#{build.repo}")
+      %td= link_to(build.ref, build.ref_url)
+      %td= link_to('View on Jenkins', build.jenkins_url)
+      %td= link_to(build.status, build.jenkins_console_url)
+      %td
+        %small= build.created_at.strftime('%m/%d/%Y %I:%M %p')
+      %td= link_to '<i class="icon-search"></i>'.html_safe, build
+      %td= link_to '<i class="icon-remove"></i>'.html_safe, build, method: :delete, data: { confirm: 'Are you sure?' }
 
 %br
 
-= link_to 'New Build', new_build_path
+= paginate @builds, :theme => 'bootstrap'

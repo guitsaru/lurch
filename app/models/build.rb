@@ -4,6 +4,7 @@ class Build < ActiveRecord::Base
   belongs_to :project
   validates  :project_id, :presence => true
 
+  before_create :check_for_pull_request
   after_create :send_to_jenkins
   after_update :update_pull_request_status
 
@@ -14,6 +15,14 @@ class Build < ActiveRecord::Base
 
   def jenkins_console_url
     jenkins_url + "/console"
+  end
+
+  def started?
+    status == 'started'
+  end
+
+  def pending?
+    status == 'pending'
   end
 
   def finished?
@@ -28,7 +37,34 @@ class Build < ActiveRecord::Base
     status == "success"
   end
 
+  def commit_url
+   "https://github.com/#{self.repo}/commit/#{self.sha}" 
+  end
+
+  def pull_request_url
+    return unless pull_request_id
+
+    "https://github.com/#{project.repo}/pulls/#{pull_request_id}"
+  end
+
+  def ref
+    pull_request_id ? [pull_request_user, pull_request_branch].join(':') : sha[0..30]
+  end
+
+  def ref_url
+    pull_request_url || commit_url
+  end
+
   protected
+  def check_for_pull_request
+    pull_request = Github.pull_request_for_sha(project, sha)
+    return unless pull_request
+
+    self.pull_request_id     = pull_request.html_url.split('/').last
+    self.pull_request_user   = pull_request.head.repo.owner.login
+    self.pull_request_branch = pull_request.head.ref
+  end
+
   def send_to_jenkins
     response = Jenkins.new.create_build(self)
 

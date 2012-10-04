@@ -11,16 +11,19 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121003230132) do
+ActiveRecord::Schema.define(:version => 20121004052421) do
 
   create_table "builds", :force => true do |t|
     t.string   "sha"
     t.string   "jenkins_id"
     t.string   "status"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",          :null => false
+    t.datetime "updated_at",          :null => false
     t.integer  "project_id"
     t.string   "repo"
+    t.integer  "pull_request_id"
+    t.string   "pull_request_user"
+    t.string   "pull_request_branch"
   end
 
   create_table "projects", :force => true do |t|

@@ -7,10 +7,10 @@
           %li= msg
 
   .field
-    = f.label :repo
+    = f.label :repo, "Repository (i.e. br/breport)"
     = f.text_field :repo
   .field
-    = f.label :jenkins_id
+    = f.label :jenkins_id, "Jenkins Identifier (optional)"
     = f.text_field :jenkins_id
   .actions
     = f.submit 'Save'

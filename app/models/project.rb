@@ -10,6 +10,10 @@ class Project < ActiveRecord::Base
   after_create  :create_github_hook
   before_validation :set_jenkins_id
 
+  def last_build
+    builds.order('created_at DESC').first
+  end
+
   def jenkins_url
      base = Setting.by_key('jenkins_url').to_s.chomp('/')
      base = "http://#{base}" unless base =~ /https?:\/\//
