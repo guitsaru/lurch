@@ -92,11 +92,11 @@ class Build < ActiveRecord::Base
     repo_id += " (#{self.project.jenkins_id})" if self.repo.gsub('/', '-') != self.project.jenkins_id
 
     if succeeded?
-      text = "Build succeeded on #{self.repo}: #{build_url}"
+      text = "Build succeeded on #{repo_id}: #{build_url}"
     end
 
     if failed?
-      text = "Build failed on #{self.repo}: #{build_url}"
+      text = "Build failed on #{repo_id}: #{build_url}"
     end
 
     Campfire.speak(text) if text
