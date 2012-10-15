@@ -57,7 +57,9 @@ if [ ! -d &quot;./.git&quot; ]; then
   git remote add origin git@github.com:<%= repo %>.git
 fi
 
-git remote rm origin
+if [ `git remote | grep origin` ]; then
+  git remote rm origin
+fi
 git remote add origin git@github.com:$LURCH_REPO.git
 git fetch -q origin
 git reset -q --hard $LURCH_SHA1
