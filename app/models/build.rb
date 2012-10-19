@@ -58,7 +58,12 @@ class Build < ActiveRecord::Base
 
   protected
   def check_for_pull_request
-    pull_request = Github.pull_request_for_sha(project, sha)
+    pull_request = begin
+      Github.pull_request_for_sha(project, sha)
+    rescue
+      nil
+    end
+
     return unless pull_request
 
     self.pull_request_id     = pull_request.html_url.split('/').last
