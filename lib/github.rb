@@ -31,12 +31,13 @@ module GitHub
 
       if build.failed?
 
-        if pull_request
+        if pull_request && pull_request['head'].try(:[], 'user').try(:[], 'login') && pull_request['number']
           creator  = pull_request['head']['user']['login']
           comment = "@#{creator} #{status_text}"
 
           github.add_comment(build.project.repo, pull_request['number'], comment)
         else
+          Rails.logger.info pull_request.inspect
           comment = status_text
 
           github.create_commit_comment(build.project.repo, build.sha, comment)
