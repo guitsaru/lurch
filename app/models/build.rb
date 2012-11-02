@@ -45,7 +45,7 @@ class Build < ActiveRecord::Base
   def pull_request_url
     return unless pull_request_id
 
-    "https://github.com/#{project.repo}/pulls/#{pull_request_id}"
+    "https://github.com/#{project.repo}/pull/#{pull_request_id}"
   end
 
   def ref
