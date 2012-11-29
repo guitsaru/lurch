@@ -14,9 +14,9 @@ mysql_commands = <<-END
 mkdir -p ~/mysql
 cat > ~/.my.cnf <<EOF
 [mysqld]
-datadir=/home/hudson/mysql/data
-user=hudson
-socket=/home/hudson/mysql/mysql.sock
+datadir=$HOME/mysql/data
+user=`whoami`
+socket=$HOME/mysql/mysql.sock
 EOF
 
 export MYSQL_HOME=~/mysql
