@@ -49,8 +49,8 @@
   <builders>
     <hudson.tasks.Shell>
      <command>
-curl -s -o use-ruby https://repository-cloudbees.forge.cloudbees.com/distributions/ci-addons/use-ruby
-RUBY_VERSION=1.9.3-p125 source ./use-ruby
+curl -s -o use-ruby https://repository-cloudbees.forge.cloudbees.com/distributions/ci-addons/ruby/use-ruby
+RUBY_VERSION=1.9.3-p327 source ./use-ruby
 gem install --conservative bundler
 if [ ! -d &quot;./.git&quot; ]; then
   git init
