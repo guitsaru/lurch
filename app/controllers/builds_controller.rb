@@ -37,7 +37,14 @@ class BuildsController < ApplicationController
     @build.destroy
 
     respond_to do |format|
-      format.html { redirect_to [@project, @build] }
+      format.html do
+        if params[:project_id]
+          redirect_to project_builds_path(@project)
+        else
+          redirect_to builds_path
+        end
+      end
+
       format.json { head :no_content }
     end
   end
