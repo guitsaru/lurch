@@ -1,6 +1,6 @@
 class BuildsController < ApplicationController
   def index
-    @builds = scope.order("created_at DESC").page(params[:page]).per(50)
+    @builds = scope.paginated_by_date(params[:page], 50)
 
     respond_to do |format|
       format.html

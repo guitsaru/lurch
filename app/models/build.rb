@@ -9,6 +9,10 @@ class Build < ActiveRecord::Base
   after_update :update_pull_request_status
   after_save   :notify_campfire
 
+  def self.paginated_by_date(page=1, per_page=50)
+    order('created_at DESC').page(page || 1).per(per_page)
+  end
+
   def jenkins_url
     return '' unless project
     "#{project.jenkins_url}/#{jenkins_id || 'lastBuild'}"
@@ -86,7 +90,7 @@ class Build < ActiveRecord::Base
   def update_pull_request_status
     return unless finished?
 
-    response = Github.update_repo_status_for_build(self)
+    Github.update_repo_status_for_build(self)
   end
 
   def notify_campfire
