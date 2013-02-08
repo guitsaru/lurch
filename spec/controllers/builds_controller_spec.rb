@@ -27,4 +27,33 @@ describe BuildsController do
       end
     end
   end
+
+  context "show" do
+    context "with no specified project" do
+      it "assigns the build" do
+        build = stub
+        Build.stub(:find).with('1').and_return(build)
+
+        get :show, :id => 1
+
+        assigns(:build).should == build
+      end
+    end
+
+    context "with specified project" do
+      it "assigns build" do
+        build   = stub
+        scope   = stub
+        project = stub(:builds => scope)
+
+        scope.stub(:find).with('1').and_return(build)
+        Project.stub(:find_by_jenkins_id).with('1').and_return(project)
+
+        get :show, :id => 1, :project_id => 1
+
+        assigns(:build).should == build
+      end
+    end
+
+  end
 end
