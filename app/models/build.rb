@@ -4,11 +4,6 @@ class Build < ActiveRecord::Base
   belongs_to :project, :touch => true
   validates  :project_id, :presence => true
 
-  before_create :check_for_pull_request
-  after_create :send_to_jenkins
-  after_update :update_pull_request_status
-  after_save   :notify_campfire
-
   def self.paginated_by_date(page=1, per_page=50)
     order('created_at DESC').page(page || 1).per(per_page)
   end
@@ -58,56 +53,5 @@ class Build < ActiveRecord::Base
 
   def ref_url
     pull_request_url || commit_url
-  end
-
-  protected
-  def check_for_pull_request
-    pull_request = begin
-      Github.pull_request_for_sha(project, sha)
-    rescue
-      nil
-    end
-
-    return unless pull_request
-
-    self.pull_request_id     = pull_request.html_url.split('/').last
-    self.pull_request_user   = pull_request.head.repo.owner.login
-    self.pull_request_branch = pull_request.head.ref
-  end
-
-  def send_to_jenkins
-    response = Jenkins.new.create_build(self)
-
-    if response
-      self.status = 'pending'
-    else
-      self.status = 'error'
-    end
-
-    self.save
-  end
-
-  def update_pull_request_status
-    return unless finished?
-
-    Github.update_repo_status_for_build(self)
-  end
-
-  def notify_campfire
-    text = nil
-    build_url = "#{Setting.by_key('lurch_url').to_s}/projects/#{self.project.jenkins_id}/builds/#{self.id}"
-
-    repo_id = self.repo
-    repo_id += " (#{self.project.jenkins_id})" if self.repo.gsub('/', '-') != self.project.jenkins_id
-
-    if succeeded?
-      text = "Build succeeded on #{repo_id}: #{build_url}"
-    end
-
-    if failed?
-      text = "Build failed on #{repo_id}: #{build_url}"
-    end
-
-    Campfire.speak(text) if text
   end
 end

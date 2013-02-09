@@ -26,8 +26,10 @@ class BuildsController < ApplicationController
       return
     end
 
-    @project.builds.create(:sha => Github.current_sha_for(@project),
-                           :repo => @project.repo)
+    build = @project.builds.build(:sha => Github.current_sha_for(@project),
+                                  :repo => @project.repo)
+
+    BuildCreator.new(build).create!
 
     redirect_to(project_builds_path(@project))
   end

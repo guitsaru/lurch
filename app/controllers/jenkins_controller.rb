@@ -15,19 +15,19 @@ class JenkinsController < ApplicationController
   #             "parameters":{"branch":"master"}
   #           }
   # }
+
   def create
     payload = Payload.new(request.body.read)
     build   = Build.find(payload.build_id)
-    sha     = payload.sha
 
     build.jenkins_id = payload.jenkins_id
     if payload.started?
       build.status = 'started'
-      build.save
     elsif payload.completed?
       build.status = payload.status
-      build.save
     end
+
+    BuildCreator.new(build).save!
 
     head :ok
   end

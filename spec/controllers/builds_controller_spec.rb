@@ -67,9 +67,10 @@ describe BuildsController do
       before do
         Project.stub(:find_by_jenkins_id).with('1').and_return(project)
         Github.stub(:current_sha_for).with(project).and_return('abcdefg')
-        scope.stub(:create).with(:repo => project.repo, :sha => 'abcdefg').
-                            and_return(build)
+        scope.stub(:build).with(:repo => project.repo, :sha => 'abcdefg').
+                           and_return(build)
 
+        BuildCreator.any_instance.stub(:create!)
         post :create, :project_id => 1
       end
 
