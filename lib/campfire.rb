@@ -14,10 +14,18 @@ module CampFire
   end
 
   class Test
+    def self.campfire
+    end
+
+    def self.room
+    end
+
+    def self.speak(text)
+    end
   end
 end
 
-Campfire = if Rails.env.test?
+Campfire = if !defined?(Rails) || Rails.env.test?
              CampFire::Test
            else
              CampFire::HTTP

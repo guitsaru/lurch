@@ -33,19 +33,11 @@ describe BuildCreator do
 
   context "save!" do
     before do
-      subject.stub(:update_pull_request_status)
-      subject.stub(:notify_campfire)
       subject.build.stub(:save!)
     end
 
-    it "updates pull request status" do
-      subject.should_receive(:update_pull_request_status)
-
-      subject.save!
-    end
-
-    it "notifies campfire" do
-      subject.should_receive(:notify_campfire)
+    it "runs the notifiers" do
+      NotifierManager.should_receive(:notify_all)
 
       subject.save!
     end
@@ -110,63 +102,6 @@ describe BuildCreator do
       subject.build.pull_request_id.should == '1'
       subject.build.pull_request_user.should == 'guitsaru'
       subject.build.pull_request_branch.should == 'branch'
-    end
-  end
-
-  context "update_pull_request_status" do
-    it "does nothing if build not finished" do
-      build.stub(:finished? => false)
-
-      subject.update_pull_request_status.should == nil
-    end
-
-    it "updates the repo status for the build if finished" do
-      build.stub(:finished? => true)
-      Github.should_receive(:update_repo_status_for_build).with(build)
-
-      subject.update_pull_request_status
-    end
-  end
-
-  context "notify_campfire" do
-    it "does nothing if not finished" do
-      build.stub(:finished? => false)
-
-      subject.notify_campfire.should == nil
-    end
-
-    context "finished" do
-      let(:project) { stub }
-
-      before do
-        build.stub(:id => 1)
-        build.stub(:finished? => true)
-        build.stub(:project => project)
-        build.stub(:repo => 'br/br')
-
-        project.stub(:jenkins_id => 'br-br')
-
-        Setting.stub(:by_key).with('lurch_url').and_return('http://example.com')
-      end
-
-      it "notifies campfire of success" do
-        build.stub(:succeeded? => true)
-
-        Campfire.should_receive(:speak).
-          with("Build succeeded on br/br: http://example.com/projects/br-br/builds/1")
-
-        subject.notify_campfire
-      end
-
-      it "notifies campfire of failure" do
-        build.stub(:succeeded? => false, :failed? => true)
-
-        Campfire.should_receive(:speak).
-          with("Build failed on br/br: http://example.com/projects/br-br/builds/1")
-
-        subject.notify_campfire
-      end
-
     end
   end
 end

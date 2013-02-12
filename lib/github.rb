@@ -60,7 +60,7 @@ module GitHub
   end
 end
 
-Github = if Rails.env.test?
+Github = if !defined?(Rails) || Rails.env.test?
            GitHub::Test
          else
            GitHub::HTTP
