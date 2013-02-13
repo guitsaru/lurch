@@ -28,16 +28,14 @@ class BuildCreator
   end
 
   def update_pull_request_information
-    pull_request = begin
-      Github.pull_request_for_sha(build.project, build.sha)
-    rescue
-      nil
+    begin
+      pull_request = PullRequest.new(build.project, build.sha)
+    rescue PullRequest::NotFoundException
+      return
     end
 
-    return if pull_request.nil?
-
-    build.pull_request_id     = pull_request.html_url.split('/').last
-    build.pull_request_user   = pull_request.head.repo.owner.login
-    build.pull_request_branch = pull_request.head.ref
+    build.pull_request_id     = pull_request.id
+    build.pull_request_user   = pull_request.user
+    build.pull_request_branch = pull_request.branch
   end
 end
