@@ -58,7 +58,7 @@ class MockJenkins
   end
 end
 
-Jenkins = if Rails.env.test?
+Jenkins = if !defined?(Rails) || Rails.env.test?
             MockJenkins
           else
             JenkinsHTTP

@@ -1,6 +1,4 @@
 class ProjectsController < ApplicationController
-  # GET /projects
-  # GET /projects.json
   def index
     @projects = Project.order("updated_at desc")
 
@@ -10,8 +8,6 @@ class ProjectsController < ApplicationController
     end
   end
 
-  # GET /projects/1
-  # GET /projects/1.json
   def show
     @project = Project.find_by_jenkins_id(params[:id])
 
@@ -21,8 +17,6 @@ class ProjectsController < ApplicationController
     end
   end
 
-  # GET /projects/new
-  # GET /projects/new.json
   def new
     @project = Project.new
 
@@ -32,45 +26,46 @@ class ProjectsController < ApplicationController
     end
   end
 
-  # GET /projects/1/edit
   def edit
     @project = Project.find_by_jenkins_id(params[:id])
   end
 
-  # POST /projects
-  # POST /projects.json
   def create
     @project = Project.new(params[:project])
 
     respond_to do |format|
-      if @project.save
-        format.html { redirect_to @project, notice: 'Project was successfully created.' }
-        format.json { render json: @project, status: :created, location: @project }
-      else
+      begin
+        ProjectCreator.new(@project).create!
+      rescue
         format.html { render action: "new" }
         format.json { render json: @project.errors, status: :unprocessable_entity }
+
+        return
       end
+
+      format.html { redirect_to @project, notice: 'Project was successfully created.' }
+      format.json { render json: @project, status: :created, location: @project }
     end
   end
 
-  # PUT /projects/1
-  # PUT /projects/1.json
   def update
     @project = Project.find_by_jenkins_id(params[:id])
 
     respond_to do |format|
-      if @project.update_attributes(params[:project])
-        format.html { redirect_to @project, notice: 'Project was successfully updated.' }
-        format.json { head :no_content }
-      else
+      begin
+        ProjectCreator.new(@project).update_attributes!(params[:project])
+      rescue
         format.html { render action: "edit" }
         format.json { render json: @project.errors, status: :unprocessable_entity }
+
+        return
       end
+
+      format.html { redirect_to @project, notice: 'Project was successfully updated.' }
+      format.json { head :no_content }
     end
   end
 
-  # DELETE /projects/1
-  # DELETE /projects/1.json
   def destroy
     @project = Project.find_by_jenkins_id(params[:id])
     @project.destroy

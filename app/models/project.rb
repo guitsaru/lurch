@@ -6,10 +6,6 @@ class Project < ActiveRecord::Base
 
   has_many :builds, :dependent => :destroy
 
-  before_create :create_jenkins_job
-  after_create  :create_github_hook
-  before_validation :set_jenkins_id
-
   def to_param
     jenkins_id
   end
@@ -23,21 +19,5 @@ class Project < ActiveRecord::Base
      base = "http://#{base}" unless base =~ /https?:\/\//
 
     "#{base}/job/#{jenkins_id}"
-  end
-
-  protected
-  def set_jenkins_id
-    return unless self.repo.present?
-    return self.jenkins_id if self.jenkins_id.present?
-
-    self.jenkins_id = self.repo.gsub('/', '-')
-  end
-
-  def create_jenkins_job
-    Jenkins.new.create_job(self)
-  end
-
-  def create_github_hook
-    Github.add_hook(self)
   end
 end
