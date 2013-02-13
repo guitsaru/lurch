@@ -2,10 +2,10 @@
   = link_to(@build.repo, "https://github.com/#{@build.repo}")
   %span.label{:class => build_bootstrap_label_class(@build)}= @build.status
 
-%p= link_to(@build.ref, @build.ref_url)
+%p= link_to(@build.ref, url_encode(@build.ref_url))
 %p
   %small= @build.created_at.strftime('%m/%d/%Y %I:%M %p')
-%p= link_to("View in Jenkins", @build.jenkins_url)
-%p= link_to("View Console Output", @build.jenkins_console_url)
+%p= link_to("View in Jenkins", url_encode(@build.jenkins_url))
+%p= link_to("View Console Output", url_encode(@build.jenkins_console_url))
 
 = link_to 'Back', [@project, :builds]

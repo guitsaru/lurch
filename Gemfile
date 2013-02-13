@@ -45,6 +45,7 @@ group :development do
   gem "rack-livereload"
   gem "guard-bundler"
   gem "guard-rspec"
+  gem "brakeman"
 end
 
 gem "httparty"
