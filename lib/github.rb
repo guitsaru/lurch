@@ -22,27 +22,36 @@ module GitHub
     end
 
     def self.update_repo_status_for_build(build)
-      build_url = "#{Setting.by_key('lurch_url').to_s}/projects/#{build.project.jenkins_id}/builds/#{build.id}"
-      status_text = build.failed? ? "Build failed: #{build_url}" : "Build passed: #{build_url}"
+      status_text = if build.failed?
+                      "Build failed: #{lurch_url_for_build(build)}"
+                    else
+                      "Build passed: #{lurch_url_for_build(build)}"
+                    end
 
       github.create_status(build.project.repo, build.sha, build.status, :description => status_text)
 
-      pull_request = pull_request_for_sha(build.project, build.sha)
+      create_github_comment_for_build(build, status_text)
+    end
 
-      if build.failed?
+    def create_github_comment_for_build(build, text)
+      return unless build.failed?
 
-        if pull_request && pull_request['head'].try(:[], 'user').try(:[], 'login') && pull_request['number']
-          creator  = pull_request['head']['user']['login']
-          comment = "@#{creator} #{status_text}"
-
-          github.add_comment(build.project.repo, pull_request['number'], comment)
-        else
-          Rails.logger.info pull_request.inspect
-          comment = status_text
-
-          github.create_commit_comment(build.project.repo, build.sha, comment)
-        end
+      begin
+        pull_request = PullRequest.new(build.project, build.sha)
+      rescue PullRequest::NotFoundException
+        github.create_commit_comment(build.project.repo, build.sha, text)
       end
+
+      creator  = pull_request.user
+      comment = "@#{creator} #{text}"
+
+      github.add_comment(build.project.repo, pull_request.id, comment)
+    end
+
+    def self.lurch_url_for_build(build)
+      base_url = Setting.by_key('lurch_url').to_s
+
+      "#{base_url}/projects/#{build.project.jenkins_id}/builds/#{build.id}"
     end
 
     def self.current_sha_for(project)
