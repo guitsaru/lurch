@@ -16,3 +16,6 @@
 
 config/database.yml
 public/system
+
+# Ignore sass-cache
+.sass-cache
